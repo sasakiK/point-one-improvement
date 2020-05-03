@@ -1,18 +1,12 @@
-package rakuten.travel.pointoneimprovement;
+package rakuten.travel.pointoneimprovement.dto;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Entity
-@Data
+//@Data
 public class Imp {
 
-    @Id
-    @GeneratedValue
     private Integer id;
     private String content;
     private LocalDateTime createdAt;

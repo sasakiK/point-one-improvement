@@ -6,9 +6,7 @@ import org.springframework.stereotype.Repository;
 import rakuten.travel.pointoneimprovement.dto.Imp;
 import rakuten.travel.pointoneimprovement.dto.ImpRowMapper;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -49,5 +47,4 @@ public class ImpRepository {
 
         return jdbcTemplate.update(sql, arg) == 1;
     }
-
 }

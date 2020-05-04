@@ -9,10 +9,10 @@ import rakuten.travel.pointoneimprovement.repository.ImpRepository;
 import rakuten.travel.pointoneimprovement.dto.Imp;
 import rakuten.travel.pointoneimprovement.service.ImpService;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
+@RequestMapping("/api/improvements")
 public class ImpController {
 
     private final ImpRepository repository;

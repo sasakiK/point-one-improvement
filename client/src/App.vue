@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+      <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal">
       <el-menu-item index="1"><router-link to="/" style="text-decoration: none; display:block;">Principles for success 92, No.10</router-link></el-menu-item>
       <el-menu-item index="2"><router-link to="/about" style="text-decoration: none; display:block;">About</router-link></el-menu-item>
       <!-- <el-menu-item index="1"><a href="/">Principles for success 92, No.10</a></el-menu-item>
@@ -16,6 +16,13 @@
 </template>
 
 <script>
+  export default {
+    data() {
+      return {
+        activeIndex: '1'
+      }
+    }
+  }
 </script>
 
 <style lang="scss">
@@ -25,6 +32,11 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden
 }
 
 #nav {

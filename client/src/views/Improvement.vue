@@ -30,11 +30,11 @@
 
                         <el-popover width="100%" trigger="click" title="Edit contents">
                             <el-form :inline="true" :model="editForm">
-                                <el-form-item>
+                                <el-form-item :error="errorMessageEdit">
                                     <el-input type="text" placeholder="..." v-model="editForm.content"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button plain @click="editImp(scope.row.id, editForm.content)" native-type="submit">Edit</el-button>
+                                    <el-button plain @click.prevent="editImp(scope.row.id, editForm.content)" native-type="submit">Edit</el-button>
                                 </el-form-item>
                             </el-form>
                             <el-button type="primary" icon="el-icon-edit" size="small" circle slot="reference"></el-button>
@@ -65,7 +65,6 @@ export default {
             console.log('click');
         },
         getImps() {
-            console.log("そもそも動いてるわよね？");
             this.tableData = this.getImpsFromBackend()
         },
         getImpsFromBackend () {
@@ -80,7 +79,6 @@ export default {
         addImp(newContent) {
             const path = Utils.URL
             const inputContent = {content: newContent}
-
             this.errorMessage = ""
             if (newContent == "") {
                 this.errorMessage = "Please input something"
@@ -88,6 +86,7 @@ export default {
             }
             axios.post(path, inputContent)
                 .then(response => {
+                    this.inputForm.content = ''
                     console.log(response)
                     this.getImps()
                 })
@@ -98,9 +97,15 @@ export default {
         editImp(id, newContent) {
             const path = Utils.URL + '/' + id
             const modify = {content: newContent}
+            this.errorMessageEdit = ""
+            if (newContent == "") {
+                this.errorMessageEdit = "Please input something"
+                return;
+            }
             axios.put(path, modify)
                 .then(response => {
                     console.log(response)
+                    this.editForm.content = ''
                     this.getImps()
                 })
                 .catch(error => {
@@ -128,7 +133,8 @@ export default {
             editForm: {
                 content: ''
             },
-            errorMessage: ''
+            errorMessage: '',
+            errorMessageEdit: ''
         }
     },
     created() {

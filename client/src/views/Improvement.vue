@@ -8,14 +8,13 @@
 
             <el-form :model="inputForm">
                 <div id="form-div" style="display:inline-flex; width:100%;">
-                    <el-form-item style="width:80%;">
+                    <el-form-item style="width:80%;" :error="errorMessage">
                         <el-input 
                         type="text" placeholder="..." maxlength="200" show-word-limit
-                        :rules="[{ required: true, message: 'Please input someting', trigger: 'blur' }]"
-                        v-model="inputForm.content" title="Today's improvement"></el-input>
+                        v-model="inputForm.content"></el-input>
                     </el-form-item>
-                    <el-form-item style="width:15%;">
-                        <el-button plain @click="addImp(inputForm.content)" native-type="submit">Submit</el-button>
+                    <el-form-item style="width:15%">
+                        <el-button plain @click.prevent="addImp(inputForm.content)" native-type="submit">Submit</el-button>
                     </el-form-item>
                 </div>
             </el-form>
@@ -66,6 +65,7 @@ export default {
             console.log('click');
         },
         getImps() {
+            console.log("そもそも動いてるわよね？");
             this.tableData = this.getImpsFromBackend()
         },
         getImpsFromBackend () {
@@ -80,6 +80,12 @@ export default {
         addImp(newContent) {
             const path = Utils.URL
             const inputContent = {content: newContent}
+
+            this.errorMessage = ""
+            if (newContent == "") {
+                this.errorMessage = "Please input something"
+                return;
+            }
             axios.post(path, inputContent)
                 .then(response => {
                     console.log(response)
@@ -87,7 +93,7 @@ export default {
                 })
                 .catch(error => {
                     console.log(error)
-                })
+            })
         },
         editImp(id, newContent) {
             const path = Utils.URL + '/' + id
@@ -121,7 +127,8 @@ export default {
             },
             editForm: {
                 content: ''
-            }
+            },
+            errorMessage: ''
         }
     },
     created() {
@@ -131,13 +138,6 @@ export default {
 </script>
 
 <style>
-#app {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden
-}
-
 .el-popover__title {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -157,5 +157,4 @@ button.el-button.el-button--danger.el-button--small.is-circle.el-popover__refere
     padding-top: 0;
     padding-bottom: 0;
 }
-
 </style>

@@ -1,24 +1,41 @@
 <template>
     <div>
         <el-card style="width: 80%; margin: auto; margin-bottom: 3%;">
-            <h5 style="text-align:left;">Please add today's improvement.</h5>
+            <div slot="header" class="clearfix" style="text-align:left; margin-left: 2%;">
+                <h3>Please add today's improvements</h3>
+            </div>
+            <!-- <el-form :inline="true" :model="inputForm"> -->
+
+            <el-form :model="inputForm">
+                <div id="form-div" style="display:inline-flex; width:100%;">
+                    <el-form-item style="width:80%;">
+                        <el-input 
+                        type="text" placeholder="..." maxlength="200" show-word-limit
+                        :rules="[{ required: true, message: 'Please input someting', trigger: 'blur' }]"
+                        v-model="inputForm.content" title="Today's improvement"></el-input>
+                    </el-form-item>
+                    <el-form-item style="width:15%;">
+                        <el-button plain @click="addImp(inputForm.content)" native-type="submit">Submit</el-button>
+                    </el-form-item>
+                </div>
+            </el-form>
         </el-card>
         <el-card class="box-card" style="width: 80%; margin: auto;">
             <el-table :data="tableData" style="width: 100%; margin: auto;">
                 <el-table-column prop="created_at" label="Date" align="center" :min-width="15">
                 </el-table-column>
-                <el-table-column prop="content" label="0.1%の改善" align="left" :min-width="50">
+                <el-table-column prop="content" label="0.1% improvements" align="left" :min-width="50">
                 </el-table-column>
                 <el-table-column fixed="right" label="Operations" align="center" :min-width="30">
                     <template slot-scope="scope">
 
                         <el-popover width="100%" trigger="click" title="Edit contents">
-                            <el-form :inline="true" :model="form">
+                            <el-form :inline="true" :model="editForm">
                                 <el-form-item>
-                                    <el-input type="text" placeholder="..." v-model="form.content"></el-input>
+                                    <el-input type="text" placeholder="..." v-model="editForm.content"></el-input>
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button plain @click="editImp(scope.row.id, form.content)" native-type="submit">Edit</el-button>
+                                    <el-button plain @click="editImp(scope.row.id, editForm.content)" native-type="submit">Edit</el-button>
                                 </el-form-item>
                             </el-form>
                             <el-button type="primary" icon="el-icon-edit" size="small" circle slot="reference"></el-button>
@@ -60,6 +77,18 @@ export default {
                     console.log(error)
                 })
         },
+        addImp(newContent) {
+            const path = Utils.URL
+            const inputContent = {content: newContent}
+            axios.post(path, inputContent)
+                .then(response => {
+                    console.log(response)
+                    this.getImps()
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        },
         editImp(id, newContent) {
             const path = Utils.URL + '/' + id
             const modify = {content: newContent}
@@ -87,7 +116,10 @@ export default {
     data() {
         return {
             tableData: [],
-            form: {
+            inputForm: {
+                content: ''
+            },
+            editForm: {
                 content: ''
             }
         }
@@ -99,6 +131,13 @@ export default {
 </script>
 
 <style>
+#app {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden
+}
+
 .el-popover__title {
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
@@ -114,4 +153,9 @@ div.btn-confirm {
 button.el-button.el-button--danger.el-button--small.is-circle.el-popover__reference {
     margin-left: 2%;
 }
+.el-card__header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 </style>

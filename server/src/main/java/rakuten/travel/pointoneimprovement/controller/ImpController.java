@@ -30,15 +30,15 @@ public class ImpController {
         return new ResponseEntity<List>(impList, HttpStatus.OK);
     }
 
-    @GetMapping("/pointoneimps/{id}")
-    public ResponseEntity<Imp> getAllImps(@PathVariable Integer id){
-        Imp imp = impService.getImpById(id);
-        return new ResponseEntity<Imp>(imp, HttpStatus.OK);
+    @GetMapping("/pointoneimps/{email}")
+    public ResponseEntity<List> getImpsByEmail(@PathVariable String email){
+        List impList = impService.getImpsByEmail(email);
+        return new ResponseEntity<List>(impList, HttpStatus.OK);
     }
 
-    @PostMapping("/pointoneimps")
-    public ResponseEntity<IdWapper> saveImp(@RequestBody Imp imp){
-        IdWapper idWapper = impService.saveImp(imp);
+    @PostMapping("/pointoneimps/{email}")
+    public ResponseEntity<IdWapper> saveImp(@RequestBody Imp imp, @PathVariable String email){
+        IdWapper idWapper = impService.saveImp(imp, email);
         return new ResponseEntity<>(idWapper, HttpStatus.OK);
     }
 

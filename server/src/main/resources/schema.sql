@@ -1,7 +1,15 @@
 DROP TABLE improvement IF EXISTS;
+DROP TABLE user IF EXISTS;
 
 CREATE TABLE improvement (
     id INT AUTO_INCREMENT PRIMARY KEY,
     content VARCHAR(200) NOT NULL,
-    created_at DATE
+    created_at DATE,
+    user_id INT,
+    FOREIGN KEY (user_id) REFERENCES user (id)
+) ENGINE = INNODB;
+
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) NOT NULL
 ) ENGINE = INNODB;

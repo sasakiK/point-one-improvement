@@ -1,7 +1,5 @@
 package rakuten.travel.pointoneimprovement.dto;
 
-import lombok.Data;
-
 import java.time.LocalDateTime;
 
 //@Data
@@ -10,6 +8,16 @@ public class Imp {
     private Integer id;
     private String content;
     private LocalDateTime createdAt;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    private Integer userId;
 
     public Imp() {
     }

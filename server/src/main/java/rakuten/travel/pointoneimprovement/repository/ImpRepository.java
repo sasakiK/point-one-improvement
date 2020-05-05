@@ -26,20 +26,25 @@ public class ImpRepository {
         return jdbcTemplate.queryForList(sql);
     }
 
-    public Imp getImpById(Integer id) {
-        String sql = "SELECT * FROM improvement WHERE id = ?;";
-        Imp tmpImp = jdbcTemplate.queryForObject(sql, new Object[]{id}, new ImpRowMapper());
-        return tmpImp;
+    public List<Map<String, Object>> getImpsByEmail(String email) {
+        // emailでuserを識別し、該当する行のみを返す
+        String sql = "SELECT * FROM improvement i JOIN user u ON i.user_id = u.id WHERE u.email = ?;";
+        return jdbcTemplate.queryForList(sql, email);
     }
 
-    public Integer saveImp(Imp imp) {
+    public Integer saveImp(Imp imp, String email) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         LocalDateTime createdAt = LocalDateTime.now();
-        String sql = "INSERT INTO improvement (content, created_at) VALUES (?, ?);";
+
+        // 一旦 user_idをemailから取得
+        Integer userId = jdbcTemplate.queryForObject("SELECT id FROM user WHERE email = ?",
+                new Object[]{ email }, Integer.class);
+        String sql = "INSERT INTO improvement (content, created_at, user_id) VALUES (?, ?, ?);";
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, imp.getContent());
             ps.setString(2, createdAt.toString());
+            ps.setInt(3, userId);
             return ps;
             }, keyHolder);
         return keyHolder.getKey().intValue();

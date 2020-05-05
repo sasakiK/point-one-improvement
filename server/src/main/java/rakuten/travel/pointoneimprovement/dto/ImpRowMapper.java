@@ -12,6 +12,7 @@ public class ImpRowMapper implements RowMapper<Imp> {
         imp.setId(rs.getInt("id"));
         imp.setContent(rs.getString("content"));
         imp.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+        imp.setUserId(rs.getInt("user_id"));
         return imp;
     }
 

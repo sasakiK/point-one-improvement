@@ -19,12 +19,12 @@ public class ImpService {
         return impRepository.getAllImps();
     }
 
-    public Imp getImpById(Integer id) {
-        return impRepository.getImpById(id);
+    public List<Map<String, Object>> getImpsByEmail(String email) {
+        return impRepository.getImpsByEmail(email);
     }
 
-    public IdWapper saveImp(Imp imp) {
-        Integer id = impRepository.saveImp(imp);
+    public IdWapper saveImp(Imp imp, String email) {
+        Integer id = impRepository.saveImp(imp, email);
         return IdWapper.builder().id(id).build();
     }
 

@@ -4,7 +4,6 @@
             <div slot="header" class="clearfix" style="text-align:left; margin-left: 2%;">
                 <h3>Please add today's improvements</h3>
             </div>
-            <!-- <el-form :inline="true" :model="inputForm"> -->
 
             <el-form :model="inputForm">
                 <div id="form-div" style="display:inline-flex; width:100%;">
@@ -19,7 +18,7 @@
                 </div>
             </el-form>
         </el-card>
-        <el-card class="box-card" style="width: 80%; margin: auto;">
+        <el-card class="box-card" style="width: 80%; margin: auto; margin-bottom:7%">
             <el-table :data="tableData" style="width: 100%; margin: auto;">
                 <el-table-column prop="created_at" label="Date" align="center" :min-width="15">
                 </el-table-column>
@@ -61,22 +60,11 @@ import Utils from '../utils/Utils'
 export default {
     name: "Improvement",
     methods: {
-        handleClick() {
-            console.log('click');
+        getImps: async function() {
+            const res = await axios.get(Utils.URL)
+            this.tableData = res.data.slice().reverse()
         },
-        getImps() {
-            this.tableData = this.getImpsFromBackend()
-        },
-        getImpsFromBackend () {
-            axios.get(Utils.URL)
-                .then(response => {
-                    this.tableData = response.data.slice().reverse();
-                })
-                .catch(error => {
-                    console.log(error)
-                })
-        },
-        addImp(newContent) {
+        addImp: async function(newContent) {
             const path = Utils.URL
             const inputContent = {content: newContent}
             this.errorMessage = ""

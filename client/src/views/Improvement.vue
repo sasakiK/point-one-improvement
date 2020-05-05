@@ -7,7 +7,7 @@
 
             <el-form :model="inputForm">
                 <div id="form-div" style="display:inline-flex; width:100%;">
-                    <el-form-item style="width:80%;" :error="errorMessage">
+                    <el-form-item style="width:80%; margin-left:4.5%;" :error="errorMessage">
                         <el-input 
                         type="text" placeholder="..." maxlength="200" show-word-limit
                         v-model="inputForm.content"></el-input>

@@ -1,28 +1,54 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Router from 'vue-router'
+import Improvement from '../views/Improvement.vue'
+import firebase from 'firebase'
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-  const routes = [
-  {
-    path: '/',
-    name: 'improvement',
-    component: () => import(/* webpackChunkName: "improvement" */ '../views/Improvement.vue')
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
-]
-
-const router = new VueRouter({
+let router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes: [
+    {
+      path: '/',
+      name: 'Improvement',
+      component: Improvement,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    },
+    {
+      path: '/signup',
+      name: 'Signup',
+      component: () => import(/* webpackChunkName: "singup" */ '../views/Signup.vue')
+    },
+    {
+      path: '/signin',
+      name: 'Signin',
+      component: () => import(/* webpackChunkName: "singin" */ '../views/Signin.vue')
+    }
+  ]
+})
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
+  if (requiresAuth) {
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          next()
+        } else {
+          next({
+            path: '/signin',
+            query: {redirect: to.fullPath }
+          })
+        }
+    })
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -44,6 +44,7 @@ export default {
               type: 'message'
             })
           })
+          .then(() => this.$router.push('/'))
           .catch(error => {
             this.$message({
               showClose: true,

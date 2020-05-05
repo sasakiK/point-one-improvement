@@ -36,14 +36,14 @@
                                     <el-button plain @click.prevent="editImp(scope.row.id, editForm.content)" native-type="submit">Edit</el-button>
                                 </el-form-item>
                             </el-form>
-                            <el-button type="primary" icon="el-icon-edit" size="small" circle slot="reference"></el-button>
+                            <el-button icon="el-icon-edit" size="small" circle slot="reference"></el-button>
                         </el-popover>
 
                         <el-popover trigger="click" title="Can I delete this?">
                             <div class="btn-confirm">
                                 <el-button type="danger" size="mini" @click="removeImp(scope.row.id)">Yes</el-button>
                             </div>
-                            <el-button type="danger" icon="el-icon-delete" size="small" circle slot="reference"></el-button>
+                            <el-button icon="el-icon-delete" size="small" circle slot="reference"></el-button>
                         </el-popover>
 
                     </template>
@@ -72,17 +72,16 @@ export default {
                 this.errorMessage = "Please input something"
                 return;
             }
-            axios.post(path, inputContent)
-                .then(response => {
-                    this.inputForm.content = ''
-                    console.log(response)
-                    this.getImps()
-                })
-                .catch(error => {
-                    console.log(error)
+            await axios.post(path, inputContent)
+            this.inputForm.content = ''
+            await this.getImps()
+            this.$message({
+                showClose: true,
+                message: 'Nice Improvement!',
+                type: 'message'
             })
         },
-        editImp(id, newContent) {
+        editImp: async function(id, newContent) {
             const path = Utils.URL + '/' + id
             const modify = {content: newContent}
             this.errorMessageEdit = ""
@@ -90,26 +89,24 @@ export default {
                 this.errorMessageEdit = "Please input something"
                 return;
             }
-            axios.put(path, modify)
-                .then(response => {
-                    console.log(response)
-                    this.editForm.content = ''
-                    this.getImps()
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            await axios.put(path, modify)
+            this.editForm.content = ''
+            await this.getImps()
+            this.$message({
+                showClose: true,
+                message: 'Nice modify!',
+                type: 'message'
+            })
         },
-        removeImp(id) {
+        removeImp: async function(id) {
             const path = Utils.URL + '/' + id
-            axios.delete(path)
-                .then(response => {
-                    console.log(response)
-                    this.getImps()
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+            await axios.delete(path)
+            await this.getImps()
+            this.$message({
+                showClose: true,
+                message: 'Nice delete!',
+                type: 'message'
+            })
         }
     },
     data() {
@@ -131,24 +128,6 @@ export default {
 }
 </script>
 
-<style>
-.el-popover__title {
-    font-family: Arial, Helvetica, sans-serif;
-    text-align: center;
-}
-.el-popover {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-div.btn-confirm {
-    text-align: center;
-}
-
-button.el-button.el-button--danger.el-button--small.is-circle.el-popover__reference {
-    margin-left: 2%;
-}
-.el-card__header {
-    padding-top: 0;
-    padding-bottom: 0;
-}
+<style lang="scss">
+    @import "../styles/base";
 </style>

@@ -1,0 +1,36 @@
+.el-popover__title {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+}
+.el-popover {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+div.btn-confirm {
+    text-align: center;
+}
+
+button.el-button--small.is-circle {
+    margin-left: 2%;
+}
+
+.el-table th>.cell {
+    color: #C00014;
+}
+
+.el-card__header {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.el-form-item__error  {
+    color: #C00014; 
+}
+
+.el-form-item.is-error .el-input__inner {
+    border-color: #C00014;
+}
+
+.el-message {
+    font-family: Arial, Helvetica, sans-serif;
+}

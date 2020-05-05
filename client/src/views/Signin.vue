@@ -1,15 +1,13 @@
 <template>
-    <el-card style="width: 40%; margin: auto; margin-bottom: 10%;">
+    <el-card style="width: 40%; margin: auto; margin-bottom: 10%; margin-top: 10%;">
         <div slot="header" class="clearfix" style="text-align:center;">
                 <h2>Please sign in</h2>
         </div>
         <el-form style="text-align:center;">
             <el-form-item>
-                <el-input type="text" placeholder="Email" v-model="email">
-                </el-input>
+                <el-input type="text" placeholder="Email" v-model="email"></el-input>
             </el-form-item>
-                <el-input placeholder="Password" v-model="password" show-password>
-                </el-input>
+                <el-input placeholder="Password" v-model="password" show-password></el-input>
 
             <el-button style="align:left;" @click="signIn">Signin</el-button>
             <p>You don't have an account?</p>

@@ -1,5 +1,5 @@
 <template>
-    <el-card style="width: 40%; margin: auto; margin-bottom: 10%;">
+    <el-card style="width: 40%; margin: auto; margin-bottom: 10%; margin-top: 10%;">
         <div slot="header" class="clearfix" style="text-align:center;">
                 <h2>Please signup</h2>
         </div>

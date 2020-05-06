@@ -23,6 +23,8 @@
 <script>
 
 import firebase from 'firebase'
+import Utils from '../utils/Utils'
+import axios from 'axios'
 
 export default {
     name: "Signup",
@@ -33,9 +35,15 @@ export default {
       }
     },
     methods: {
+      addUser: async function(email) {
+        const path = Utils.URL_USER
+        const inputContent = {email: email}
+        await axios.post(path, inputContent)
+      },
       signUp: async function() {
         await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
           .then(() => {
+            this.addUser(this.email)
             this.email = undefined
             this.password = undefined
             this.$message({

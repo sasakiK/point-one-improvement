@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1 style="padding-top:4%; padding-bottom:3%; color: #2c3e50;">Principles for success 92, No.10</h1>
         <el-card style="width: 80%; margin: auto; margin-bottom: 3%;">
             <div slot="header" class="clearfix" style="text-align:left; margin-left: 2%;">
                 <h3>Please add today's improvements</h3>
@@ -18,7 +19,7 @@
                 </div>
             </el-form>
         </el-card>
-        <el-card class="box-card" style="width: 80%; margin: auto; margin-bottom:7%">
+        <el-card class="box-card" style="width: 80%; margin: auto;">
             <el-table :data="tableData" style="width: 100%; margin: auto;">
                 <el-table-column prop="created_at" label="Date" align="center" :min-width="15">
                 </el-table-column>
@@ -50,29 +51,42 @@
                 </el-table-column>
             </el-table>
         </el-card>
+        <el-row style="text-align:right; width: 90%; margin-top: 2%; margin-bottom:7%;">
+            <sub-header/>
+        </el-row>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Utils from '../utils/Utils'
+import SubHeader from "../components/SubHeader";
+
+import firebase from 'firebase'
 
 export default {
     name: "Improvement",
+    components: {SubHeader},
     methods: {
+        
+        setUrl: function() {
+            this.getUserEmail()
+            return Utils.URL + "/" + this.email
+        },
         getImps: async function() {
-            const res = await axios.get(Utils.URL)
+            const URL_ONE_USER = this.setUrl()
+            const res = await axios.get(URL_ONE_USER)
             this.tableData = res.data.slice().reverse()
         },
         addImp: async function(newContent) {
-            const path = Utils.URL
+            const URL_ADD = this.setUrl()
             const inputContent = {content: newContent}
             this.errorMessage = ""
             if (newContent == "") {
                 this.errorMessage = "Please input something"
                 return;
             }
-            await axios.post(path, inputContent)
+            await axios.post(URL_ADD, inputContent)
             this.inputForm.content = ''
             await this.getImps()
             this.$message({
@@ -107,10 +121,23 @@ export default {
                 message: 'Nice delete!',
                 type: 'message'
             })
+        },
+        checkIsLogin: async function() {
+            var user = firebase.auth().currentUser;
+            if (user != null) {
+                this.isLogin = true
+            }
+        },
+        getUserEmail: async function() {
+            var user = firebase.auth().currentUser;
+            if (user != null) {
+                this.email = user.email
+            }
         }
     },
     data() {
         return {
+            isLogin: false,
             tableData: [],
             inputForm: {
                 content: ''
@@ -119,7 +146,8 @@ export default {
                 content: ''
             },
             errorMessage: '',
-            errorMessageEdit: ''
+            errorMessageEdit: '',
+            email: ''
         }
     },
     created() {
